@@ -1,0 +1,39 @@
+@page "/my-form"
+@inject ILogger<MyForm> Logger
+
+<EditForm Model="Model" OnSubmit="Submit" FormName="MyForm">
+    <div>
+        <label>
+            Base:
+            <InputText @bind-Value="Model!.Value1" />
+        </label>
+    </div>
+    <div>
+        <label>
+            Custom:
+            <TextInput @bind-Value="Model!.Value2" />
+        </label>
+    </div>
+    <div>
+        <button type="submit">Submit</button>
+    </div>
+</EditForm>
+
+@code {
+    [SupplyParameterFromForm]
+    private Example? Model { get; set; }
+
+    protected override void OnInitialized() => Model ??= new();
+
+    private void Submit() 
+    {
+        Logger.LogInformation("Value1 = {Value1}", Model?.Value1);
+        Logger.LogInformation("Value2 = {Value2}", Model?.Value2);
+    }
+
+    public class Example
+    {
+        public string? Value1 { get; set; }
+        public string? Value2 { get; set; }
+    }
+}
